@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello</title>
+</head>
+<title>타이틀</title>
+<body>
+<h2> 회원 가입  </h2>
+
+<form action = "/join", method="post">
+    <input type="text" name="username" placeholder="email">
+    <input type="text" name="password" placeholder="password">
+    <select name="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+    </select>
+    <button> 가입 하기 </button>
+</form>
+</body>
+</html>
