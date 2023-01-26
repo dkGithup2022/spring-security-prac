@@ -1,8 +1,7 @@
 
 spring:
-  security:
-    user:
-      password: 1234
+  profiles:
+    include: google
 
   datasource:
     url: jdbc:h2:mem:mydb
@@ -15,3 +14,17 @@ spring:
   h2:
     console.enabled: true
 
+  security:
+    oauth2:
+      client:
+        registration:   # (1)
+          google:       # (2)
+            client-id: 13606801240-j2hctop9k6dbt7fepergablqqnflc4cs.apps.googleusercontent.com
+            client-secret: OCSPX-tK2Zm8AyvQZRHAfwk6AKWzhon_iw
+            scope:
+              - email
+              - profile
+
+
+
+# ...

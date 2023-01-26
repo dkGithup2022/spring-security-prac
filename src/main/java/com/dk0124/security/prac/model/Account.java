@@ -1,12 +1,8 @@
 package com.dk0124.security.prac.model;
 
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.security.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +11,7 @@ import java.util.List;
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account {
+public class Account  {
 
     @Id
     @GeneratedValue
@@ -24,6 +20,9 @@ public class Account {
     private String username;
 
     private String password;
+
+    private String provider;
+    private String providerId;
 
     @Enumerated(EnumType.STRING)
     private Role roles;

@@ -7,23 +7,41 @@ package com.dk0124.security.prac.config.auth;
 // UserDetail 형시으로 만들어주는 부분에 대한 작업이 필요
 
 import com.dk0124.security.prac.model.Account;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
-@RequiredArgsConstructor
-public class CustomUserDetails implements UserDetails {
-    private final Account account;
+
+//auth context object
+@AllArgsConstructor
+public class CustomUserDetails implements UserDetails , OAuth2User {    // Authentication 객체 통일
+    private  Account account;
+    private  Map<String,Object> attributes = new HashMap<String,Object>();
+
+    public CustomUserDetails(Account account) {
+        this.account = account;
+    }
+
+    @Override
+    public <A> A getAttribute(String name) {
+        return OAuth2User.super.getAttribute(name);
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(account.getRoles().name()));
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(() -> "ROLE_" + account.getRoles()); // 여기는 ROLE_ 붙여야 됨
         return authorities;
     }
 
@@ -55,5 +73,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getName() {
+        return account.getUsername();
     }
 }

@@ -6,6 +6,9 @@ import com.dk0124.security.prac.model.dto.AccountDTO;
 import com.dk0124.security.prac.repo.AccountRepo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -42,10 +45,9 @@ public class BasicController {
     }
 
     @PostMapping("/join")
-    public String join( AccountDTO accountDTO) {
+    public String join(AccountDTO accountDTO) {
         accountDTO.setPassword(passwordEncoder.encode(accountDTO.getPassword()));
         Account account = accountDTO.toEntity();
-        account.setRoles(Role.USER);
         accountRepo.save(account);
         return "redirect:/loginForm";
     }
@@ -54,5 +56,21 @@ public class BasicController {
     public String joinProc() {
         return "joinProc";
     }
+
+
+    //// test mapping
+
+
+    @GetMapping("/test/login")
+    public @ResponseBody
+    String testLogin(
+            Authentication authentication,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        log.info("test/login ------------------\nauthentication  : {}", authentication.getAuthorities());
+        log.info("user info : {}", userDetails.getAuthorities());
+        return "세션 ";
+    }
+
 
 }
